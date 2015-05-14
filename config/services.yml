@@ -1,10 +1,7 @@
-parameters:
-    gn36.firstpostedit.forums: [1,2,3]
-
 services:
     gn36.firstpostedit.listener:
         class: gn36\firstpostedit\event\listener
         arguments:
-            - %gn36.firstpostedit.forums%
+            - @auth
         tags:
             - { name: event.listener }

@@ -1,9 +1,9 @@
 {
 	"name": "gn36/firstpostedit",
 	"type": "phpbb-extension",
-	"description": "Allows editing the first post in special forums.",
+	"description": "Allows editing the first post in special forums. Please remember to edit ext/gn36/firstpostedit/config/services.yml to permit editing in the correct forums.",
 	"homepage": "https://www.phpbb.de/community/",
-	"version": "1.0.0",
+	"version": "1.0.0-PL1",
 	"time": "2014-05-09",
 	"license": "GPL-2.0",
 	"authors": [
@@ -18,9 +18,9 @@
 		"php": ">=5.3.3"
 	},
 	"extra": {
-		"display-name": "Allow edit first post",
+		"display-name": "gn36 - Allow edit first post",
 		"soft-require": {
-			"phpbb/phpbb": "3.1.*@dev"
+			"phpbb/phpbb": ">=3.1.0-b4"
 		}
 	}
 }
