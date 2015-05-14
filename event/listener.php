@@ -21,7 +21,7 @@ class listener implements EventSubscriberInterface
 {
 	/** @var \phpbb\auth\auth */
 	protected $auth;
-	
+
 	static public function getSubscribedEvents()
 	{
 		return array(
@@ -42,7 +42,7 @@ class listener implements EventSubscriberInterface
 		{
 			$is_first_post = $event['post_data']['topic_first_post_id'] == $event['post_data']['post_id'];
 			$allowed_forum = $this->auth->acl_get('f_edit_first_post', $event['post_data']['forum_id']);
-			
+
 			$event['s_cannot_edit_time'] = !($is_first_post && $allowed_forum);
 		}
 	}
