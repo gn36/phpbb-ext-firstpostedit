@@ -1,0 +1,26 @@
+{
+	"name": "gn36/firstpostedit",
+	"type": "phpbb-extension",
+	"description": "Allows editing the first post in special forums.",
+	"homepage": "https://www.phpbb.de/community/",
+	"version": "1.0.0",
+	"time": "2014-05-09",
+	"license": "GPL-2.0",
+	"authors": [
+		{
+			"name": "Martin Beckmann",
+			"email": "gn#36@phpbb.de",
+			"homepage": "https://www.phpbb.de/",
+			"role": "Developer"
+		}
+	],
+	"require": {
+		"php": ">=5.3.3"
+	},
+	"extra": {
+		"display-name": "Allow edit first post",
+		"soft-require": {
+			"phpbb/phpbb": "3.1.*@dev"
+		}
+	}
+}
