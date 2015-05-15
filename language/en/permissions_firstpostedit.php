@@ -1,6 +1,6 @@
 <?php
 /**
-* permissions_firstpostedit [German]
+* permissions_firstpostedit [English]
 *
 * @package language
 * @copyright (c) 2015 gn#36
@@ -22,5 +22,5 @@ if (empty($lang) || !is_array($lang))
 // Adding the permissions
 $lang = array_merge($lang, array(
 	// Forum perms,
-	'ACL_F_FIRST_POST_EDIT'            => 'Kann max. Bearbeitungszeit beim ersten Beitrag eigener Themen umgehen',
+	'ACL_F_FIRST_POST_EDIT'            => 'Can bypass max edit time in first post of own topics',
 ));
