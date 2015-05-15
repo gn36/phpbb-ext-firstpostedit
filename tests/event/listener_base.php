@@ -32,7 +32,7 @@ class listener_base extends \phpbb_test_case
 		return new \gn36\firstpostedit\event\listener($this->auth);
 	}
 
-	protected function get_auth_base_data()
+	protected static function get_auth_base_data()
 	{
 		return array(
 			'all' => array(

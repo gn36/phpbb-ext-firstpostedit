@@ -13,7 +13,7 @@ class listener_post_auth_test extends listener_base
 {
 	public static function post_auth_data()
 	{
-		$acl_get_map = $this->get_auth_base_data();
+		$acl_get_map = parent::get_auth_base_data();
 
 		$event_data_base = array(
 			'post_id' => 1,
