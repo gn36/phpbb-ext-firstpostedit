@@ -22,5 +22,8 @@ if (empty($lang) || !is_array($lang))
 // Adding the permissions
 $lang = array_merge($lang, array(
 	// Forum perms,
-	'ACL_F_FIRST_POST_EDIT'            => 'Can bypass max edit time in first post of own topics',
+	'ACL_F_TIME_FIRST_POST_EDIT'	=> 'Can bypass max edit time in first post of own topics',
+	'ACL_F_FIRST_POST_EDIT'			=> 'Can edit first post of own topics',
+	'ACL_F_EDIT_REPLY'				=> 'Can edit own replies',
+	'ACL_F_TIME_EDIT'				=> 'Can bypass max edit time for own replies',
 ));
