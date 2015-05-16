@@ -20,7 +20,7 @@ class listener_post_auth_test extends listener_base
 			'topic_id' => 1,
 			'forum_id' => 1,
 			'draft_id' => 1,
-			'lastclick' => now(),
+			'lastclick' => time(),
 			'submit' => false,
 			'preview' => false,
 			'save' => false,
