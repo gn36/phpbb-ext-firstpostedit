@@ -14,7 +14,7 @@ class listener_post_edit_test extends listener_base
 	public static function post_auth_data()
 	{
 		$acl_get_map = parent::get_auth_base_data();
-		
+
 		$post_data_base = array(
 			'topic_first_post_id' => 1,
 			'post_id' => 1,
@@ -37,11 +37,11 @@ class listener_post_edit_test extends listener_base
 		$event_datasets['f1_f_time']['s_cannot_edit_time'] = true;
 		$event_datasets['f1_f_null'] = clone $event_datasets['f1_f_time'];
 		$event_datasets['f1_f_null']['s_cannot_edit'] = true;
-		
+
 		// Other forum
 		$post_data_base['forum_id'] = 20;
 		$event_data_base['post_data'] = $post_data_base;
-		
+
 		$event_datasets['f20_f_true'] = clone $event_data_base;
 		$event_datasets['f20_f_false'] = clone $event_datasets['f20_f_true'];
 		$event_datasets['f20_f_false']['s_cannot_edit'] = true;
@@ -49,11 +49,11 @@ class listener_post_edit_test extends listener_base
 		$event_datasets['f20_f_time']['s_cannot_edit_time'] = true;
 		$event_datasets['f20_f_null'] = clone $event_datasets['f20_f_time'];
 		$event_datasets['f20_f_null']['s_cannot_edit'] = true;
-		
+
 		// Once more with first post != post_id
 		$post_data_base['post_id'] = 2;
 		$event_data_base['post_data'] = $post_data_base;
-		
+
 		$event_datasets['f20_s_true'] = clone $event_data_base;
 		$event_datasets['f20_s_false'] = clone $event_datasets['f20_f_true'];
 		$event_datasets['f20_s_false']['s_cannot_edit'] = true;
@@ -61,10 +61,10 @@ class listener_post_edit_test extends listener_base
 		$event_datasets['f20_s_time']['s_cannot_edit_time'] = true;
 		$event_datasets['f20_s_null'] = clone $event_datasets['f20_s_time'];
 		$event_datasets['f20_s_null']['s_cannot_edit'] = true;
-		
+
 		$post_data_base['forum_id'] = 1;
 		$event_data_base['post_data'] = $post_data_base;
-		
+
 		$event_datasets['f1_s_true'] = clone $event_data_base;
 		$event_datasets['f1_s_false'] = clone  $event_datasets['f1_f_true'];
 		$event_datasets['f1_s_false']['s_cannot_edit'] = true;
@@ -121,7 +121,7 @@ class listener_post_edit_test extends listener_base
 
 		// Dispatch
 		$dispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher();
-		$dispatcher->addListener('gn36.def_listen', array($listener, 'post_auth'));
+		$dispatcher->addListener('gn36.def_listen', array($listener, 'post_edit'));
 		$dispatcher->dispatch('gn36.def_listen', $event);
 
 		// Check
