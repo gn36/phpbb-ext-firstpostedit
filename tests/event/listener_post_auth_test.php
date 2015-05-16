@@ -15,29 +15,29 @@ class listener_post_auth_test extends listener_base
 	{
 		$acl_get_map = parent::get_auth_base_data();
 
-		$event_data_base = array(
-			'post_id' => 1,
-			'topic_id' => 1,
-			'forum_id' => 1,
-			'draft_id' => 1,
-			'lastclick' => time(),
-			'submit' => false,
-			'preview' => false,
-			'save' => false,
-			'load' => false,
-			'refresh' => true,
-			'mode' => 'edit',
-			'error' => array(),
-			'is_authed' => true,
-		);
+		$event_data_base = new \Symfony\Component\EventDispatcher\GenericEvent();
+
+		$event_data_base['post_id'] = 1;
+		$event_data_base['topic_id'] = 1;
+		$event_data_base['forum_id'] = 1;
+		$event_data_base['draft_id'] = 1;
+		$event_data_base['lastclick'] = time();
+		$event_data_base['submit'] = false;
+		$event_data_base['preview'] = false;
+		$event_data_base['save'] = false;
+		$event_data_base['load'] = false;
+		$event_data_base['refresh'] = true;
+		$event_data_base['mode'] = 'edit';
+		$event_data_base['error'] = array();
+		$event_data_base['is_authed'] = true;
 
 		$event_datasets = array();
-		$event_datasets['f20_true'] = $event_data_base;
+		$event_datasets['f20_true'] = clone $event_data_base;
 		$event_datasets['f20_true']['forum_id'] = 20;
-		$event_datasets['f20_false'] = $event_datasets['f20_true'];
+		$event_datasets['f20_false'] = clone $event_datasets['f20_true'];
 		$event_datasets['f20_false']['is_authed'] = false;
-		$event_datasets['f1_true'] = $event_data_base;
-		$event_datasets['f1_false'] = $event_datasets['f1_true'];
+		$event_datasets['f1_true'] = clone $event_data_base;
+		$event_datasets['f1_false'] = clone  $event_datasets['f1_true'];
 		$event_datasets['f1_false']['is_authed'] = false;
 
 		return array(
