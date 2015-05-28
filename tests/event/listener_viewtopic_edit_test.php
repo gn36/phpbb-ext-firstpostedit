@@ -9,17 +9,17 @@
 
 namespace gn36\firstpostedit\tests\event;
 
-class listener_post_edit_test extends listener_base
+class listener_viewtopic_edit_test extends listener_base
 {
-	public static function post_auth_data()
+	public static function viewtopic_edit_data()
 	{
-		return parent::get_post_viewtopic_test_data(true);
+		return parent::get_post_viewtopic_test_data(false);
 	}
 
 	/**
-	 * @dataProvider post_auth_data
+	 * @dataProvider viewtopic_edit_data
 	 */
-	public function test_post_auth($auth_data, $event, $expected_result)
+	public function test_viewtopic_edit($auth_data, $event, $expected_result)
 	{
 		// Modify auth
 		$this->auth->expects($this->any())
@@ -32,7 +32,7 @@ class listener_post_edit_test extends listener_base
 
 		// Dispatch
 		$dispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher();
-		$dispatcher->addListener('gn36.def_listen', array($listener, 'post_edit'));
+		$dispatcher->addListener('gn36.def_listen', array($listener, 'viewtopic_edit'));
 		$dispatcher->dispatch('gn36.def_listen', $event);
 
 		// Check
