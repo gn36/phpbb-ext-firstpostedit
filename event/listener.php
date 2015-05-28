@@ -22,6 +22,8 @@ class listener implements EventSubscriberInterface
 	/** @var \phpbb\auth\auth */
 	protected $auth;
 
+	/** @var \phpbb\user */
+
 	static public function getSubscribedEvents()
 	{
 		return array(
@@ -32,9 +34,10 @@ class listener implements EventSubscriberInterface
 		);
 	}
 
-	public function __construct(\phpbb\auth\auth $auth)
+	public function __construct(\phpbb\auth\auth $auth, \phpbb\user $user)
 	{
 		$this->auth = $auth;
+		$this->user = $user;
 	}
 
 	public function post_auth($event)
@@ -99,7 +102,8 @@ class listener implements EventSubscriberInterface
 		// Independent permissions for first post:
 		if ($is_first_post)
 		{
-			$event['s_cannot_edit'] = !(!$event['s_cannot_edit'] && $this->auth->acl_get('f_edit_first_post', $event['row']['forum_id']));
+			$is_author = $event['row']['user_id'] == $this->user->data['user_id'];
+			$event['s_cannot_edit'] = !($is_author && $this->auth->acl_get('f_edit_first_post', $event['row']['forum_id']));
 		}
 		else
 		{
