@@ -117,6 +117,7 @@ class listener_base extends \phpbb_test_case
 		{
 			$event_data_base = new \Symfony\Component\EventDispatcher\GenericEvent(null, array(
 				'row' => $post_data_base,
+				'topic_data' => $post_data_base,
 				'force_edit_allowed' => false,
 				's_cannot_edit' => false,
 				's_cannot_edit_locked' => false,
@@ -135,6 +136,10 @@ class listener_base extends \phpbb_test_case
 		// Other forum
 		$post_data_base['forum_id'] = 20;
 		$event_data_base[$for_post_test ? 'post_data' : 'row'] = $post_data_base;
+		if ($for_post_test)
+		{
+			$event_data_base['topic_data'] = $post_data_base;
+		}
 
 		$event_datasets['f20_f_true'] = clone $event_data_base;
 		$event_datasets['f20_f_false'] = clone $event_datasets['f20_f_true'];
@@ -147,6 +152,10 @@ class listener_base extends \phpbb_test_case
 		// Once more with first post != post_id
 		$post_data_base['post_id'] = 2;
 		$event_data_base[$for_post_test ? 'post_data' : 'row'] = $post_data_base;
+		if ($for_post_test)
+		{
+			$event_data_base['topic_data'] = $post_data_base;
+		}
 
 		$event_datasets['f20_s_true'] = clone $event_data_base;
 		$event_datasets['f20_s_false'] = clone $event_datasets['f20_f_true'];
@@ -158,6 +167,10 @@ class listener_base extends \phpbb_test_case
 
 		$post_data_base['forum_id'] = 1;
 		$event_data_base[$for_post_test ? 'post_data' : 'row'] = $post_data_base;
+		if ($for_post_test)
+		{
+			$event_data_base['topic_data'] = $post_data_base;
+		}
 
 		$event_datasets['f1_s_true'] = clone $event_data_base;
 		$event_datasets['f1_s_false'] = clone  $event_datasets['f1_f_true'];
