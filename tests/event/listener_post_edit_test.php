@@ -19,13 +19,16 @@ class listener_post_edit_test extends listener_base
 	/**
 	 * @dataProvider post_auth_data
 	 */
-	public function test_post_auth($auth_data, $event, $expected_result)
+	public function test_post_auth($auth_data, $event, $user_id, $expected_result)
 	{
 		// Modify auth
 		$this->auth->expects($this->any())
 		->method('acl_get')
 		->with($this->stringContains('_'), $this->anything())
 		->will($this->returnValueMap($auth_data));
+
+		// Modify user
+		$this->user->data['user_id'] = $user_id;
 
 		// fetch listener
 		$listener = $this->get_listener();

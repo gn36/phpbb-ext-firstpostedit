@@ -13,6 +13,7 @@ class listener_base extends \phpbb_test_case
 {
 
 	protected $auth;
+	protected $user;
 
 	/**
 	 * Set up test environment
@@ -21,6 +22,9 @@ class listener_base extends \phpbb_test_case
 	{
 		parent::setUp();
 		$this->auth = $this->getMock('\phpbb\auth\auth');
+		$this->user = $this->getMockBuilder('\phpbb\user')
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	/**
@@ -29,7 +33,7 @@ class listener_base extends \phpbb_test_case
 	 */
 	protected function get_listener()
 	{
-		return new \gn36\firstpostedit\event\listener($this->auth);
+		return new \gn36\firstpostedit\event\listener($this->auth, $this->user);
 	}
 
 	protected static function get_auth_base_data()
@@ -101,6 +105,7 @@ class listener_base extends \phpbb_test_case
 			'topic_first_post_id' => 1,
 			'post_id' => 1,
 			'forum_id' => 1,
+			'user_id' => 1,
 		);
 
 		if($for_post_test)
@@ -183,31 +188,32 @@ class listener_base extends \phpbb_test_case
 		// This is a huge number of combinations...
 		return array(
 			// f20_s
-			array($acl_get_map['all'], $event_datasets['f20_s_true'], $event_datasets['f20_s_true']),
-			array($acl_get_map['all'], $event_datasets['f20_s_false'], $event_datasets['f20_s_true']),
-			array($acl_get_map['all'], $event_datasets['f20_s_time'], $event_datasets['f20_s_true']),
-			array($acl_get_map['all'], $event_datasets['f20_s_null'], $event_datasets['f20_s_true']), // This might be wrong?
-			array($acl_get_map['all_first'], $event_datasets['f20_s_true'], $event_datasets['f20_s_false']),
-			array($acl_get_map['all_first'], $event_datasets['f20_s_false'], $event_datasets['f20_s_false']),
-			array($acl_get_map['all_first'], $event_datasets['f20_s_time'], $event_datasets['f20_s_false']),
-			array($acl_get_map['all_first'], $event_datasets['f20_s_null'], $event_datasets['f20_s_false']),
-			array($acl_get_map['edit_first'], $event_datasets['f20_s_true'], $event_datasets['f20_s_false']),
-			array($acl_get_map['edit_first'], $event_datasets['f20_s_false'], $event_datasets['f20_s_false']),
-			array($acl_get_map['edit_first'], $event_datasets['f20_s_time'], $event_datasets['f20_s_false']),
-			array($acl_get_map['edit_first'], $event_datasets['f20_s_null'], $event_datasets['f20_s_false']),
-			array($acl_get_map['time_first'], $event_datasets['f20_s_true'], $event_datasets['f20_s_false']),
-			array($acl_get_map['all_reply'], $event_datasets['f20_s_true'], $event_datasets['f20_s_true']),
-			array($acl_get_map['all_reply'], $event_datasets['f20_s_false'], $event_datasets['f20_s_true']),
-			array($acl_get_map['all_reply'], $event_datasets['f20_s_time'], $event_datasets['f20_s_true']),
-			array($acl_get_map['all_reply'], $event_datasets['f20_s_null'], $event_datasets['f20_s_true']),
-			array($acl_get_map['edit_reply'], $event_datasets['f20_s_true'], $event_datasets['f20_s_true']),
-			array($acl_get_map['edit_reply'], $event_datasets['f20_s_false'], $event_datasets['f20_s_true']),
-			array($acl_get_map['edit_reply'], $event_datasets['f20_s_time'], $event_datasets['f20_s_time']),
-			array($acl_get_map['edit_reply'], $event_datasets['f20_s_null'], $event_datasets['f20_s_time']),
-			array($acl_get_map['time_reply'], $event_datasets['f20_s_true'], $event_datasets['f20_s_false']),
-			array($acl_get_map['time_reply'], $event_datasets['f20_s_false'], $event_datasets['f20_s_false']),
-			array($acl_get_map['time_reply'], $event_datasets['f20_s_time'], $event_datasets['f20_s_false']),
-			array($acl_get_map['time_reply'], $event_datasets['f20_s_null'], $event_datasets['f20_s_false']),
+			// ACL to check users permissions, Event containing start data, user_id, Event containing expected result data
+			array($acl_get_map['all'], 			$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_true']),
+			array($acl_get_map['all'], 			$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_true']),
+			array($acl_get_map['all'], 			$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_true']),
+			array($acl_get_map['all'], 			$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_true']), // This might be wrong?
+			array($acl_get_map['all_first'], 	$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_false']),
+			array($acl_get_map['all_first'], 	$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_false']),
+			array($acl_get_map['all_first'], 	$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_false']),
+			array($acl_get_map['all_first'], 	$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_false']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_false']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_false']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_false']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_false']),
+			array($acl_get_map['time_first'], 	$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_false']),
+			array($acl_get_map['all_reply'], 	$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_true']),
+			array($acl_get_map['all_reply'], 	$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_true']),
+			array($acl_get_map['all_reply'], 	$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_true']),
+			array($acl_get_map['all_reply'], 	$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_true']),
+			array($acl_get_map['edit_reply'], 	$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_true']),
+			array($acl_get_map['edit_reply'], 	$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_true']),
+			array($acl_get_map['edit_reply'], 	$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_time']),
+			array($acl_get_map['edit_reply'], 	$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_time']),
+			array($acl_get_map['time_reply'], 	$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_false']),
+			array($acl_get_map['time_reply'], 	$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_false']),
+			array($acl_get_map['time_reply'], 	$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_false']),
+			array($acl_get_map['time_reply'], 	$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_false']),
 		);
 
 	}

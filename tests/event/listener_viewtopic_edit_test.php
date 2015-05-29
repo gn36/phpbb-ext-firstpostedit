@@ -19,13 +19,16 @@ class listener_viewtopic_edit_test extends listener_base
 	/**
 	 * @dataProvider viewtopic_edit_data
 	 */
-	public function test_viewtopic_edit($auth_data, $event, $expected_result)
+	public function test_viewtopic_edit($auth_data, $event, $user_id, $expected_result)
 	{
 		// Modify auth
 		$this->auth->expects($this->any())
 		->method('acl_get')
 		->with($this->stringContains('_'), $this->anything())
 		->will($this->returnValueMap($auth_data));
+
+		// Modify user
+		$this->user->data['user_id'] = $user_id;
 
 		// fetch listener
 		$listener = $this->get_listener();
