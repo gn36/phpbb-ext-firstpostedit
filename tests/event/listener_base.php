@@ -109,25 +109,21 @@ class listener_base extends \phpbb_test_case
 		);
 
 		// Define basic events containing all information necessary
+		$event_data_base =  array(
+			'force_edit_allowed' => false,
+			's_cannot_edit' => false,
+			's_cannot_edit_locked' => false,
+			's_cannot_edit_time' => false,
+		);
 		if($for_post_test)
 		{
-			$event_data_base = new \Symfony\Component\EventDispatcher\GenericEvent(null, array(
-				'post_data' => $post_data_base,
-				'force_edit_allowed' => false,
-				's_cannot_edit' => false,
-				's_cannot_edit_locked' => false,
-				's_cannot_edit_time' => false,
-			));
+			$event_data_base['post_data'] = $post_data_base;
 		}
 		else
 		{
-			$event_data_base = new \Symfony\Component\EventDispatcher\GenericEvent(null, array(
+			$event_data_base = array_merge($event_data_base, array(
 				'row' => $post_data_base,
 				'topic_data' => $post_data_base,
-				'force_edit_allowed' => false,
-				's_cannot_edit' => false,
-				's_cannot_edit_locked' => false,
-				's_cannot_edit_time' => false,
 			));
 		}
 
@@ -140,29 +136,14 @@ class listener_base extends \phpbb_test_case
 		//			time - cannot_edit is false, cannot_edit_time is true
 		// 			null - cannot_edit and cannot_edit_time are true
 		$event_datasets = array();
-		$event_datasets['f1_f_true'] = clone $event_data_base;
-		$event_datasets['f1_f_false'] = clone  $event_datasets['f1_f_true'];
+		$event_datasets['f1_f_true'] = $event_data_base;
+		$event_datasets['f1_f_false'] =  $event_data_base;
 		$event_datasets['f1_f_false']['s_cannot_edit'] = true;
-		$event_datasets['f1_f_time'] = clone $event_data_base;
+		$event_datasets['f1_f_time'] = $event_data_base;
 		$event_datasets['f1_f_time']['s_cannot_edit_time'] = true;
-		$event_datasets['f1_f_null'] = clone $event_datasets['f1_f_time'];
+		$event_datasets['f1_f_null'] = $event_data_base;
 		$event_datasets['f1_f_null']['s_cannot_edit'] = true;
-
-		// Other forum
-		$post_data_base['forum_id'] = 20;
-		$event_data_base[$for_post_test ? 'post_data' : 'row'] = $post_data_base;
-		if ($for_post_test)
-		{
-			$event_data_base['topic_data'] = $post_data_base;
-		}
-
-		$event_datasets['f20_f_true'] = clone $event_data_base;
-		$event_datasets['f20_f_false'] = clone $event_datasets['f20_f_true'];
-		$event_datasets['f20_f_false']['s_cannot_edit'] = true;
-		$event_datasets['f20_f_time'] = clone $event_data_base;
-		$event_datasets['f20_f_time']['s_cannot_edit_time'] = true;
-		$event_datasets['f20_f_null'] = clone $event_datasets['f20_f_time'];
-		$event_datasets['f20_f_null']['s_cannot_edit'] = true;
+		$event_datasets['f1_f_null']['s_cannot_edit_time'] = true;
 
 		// Once more with first post != post_id
 		$post_data_base['post_id'] = 2;
@@ -172,58 +153,393 @@ class listener_base extends \phpbb_test_case
 			$event_data_base['topic_data'] = $post_data_base;
 		}
 
-		$event_datasets['f20_s_true'] = clone $event_data_base;
-		$event_datasets['f20_s_false'] = clone $event_datasets['f20_s_true'];
-		$event_datasets['f20_s_false']['s_cannot_edit'] = true;
-		$event_datasets['f20_s_time'] = clone $event_data_base;
-		$event_datasets['f20_s_time']['s_cannot_edit_time'] = true;
-		$event_datasets['f20_s_null'] = clone $event_datasets['f20_s_time'];
-		$event_datasets['f20_s_null']['s_cannot_edit'] = true;
+		$event_datasets['f1_s_true'] = $event_data_base;
+		$event_datasets['f1_s_false'] = $event_data_base;
+		$event_datasets['f1_s_false']['s_cannot_edit'] = true;
+		$event_datasets['f1_s_time'] = $event_data_base;
+		$event_datasets['f1_s_time']['s_cannot_edit_time'] = true;
+		$event_datasets['f1_s_null'] = $event_data_base;
+		$event_datasets['f1_s_null']['s_cannot_edit'] = true;
+		$event_datasets['f1_s_null']['s_cannot_edit_time'] = true;
 
-		$post_data_base['forum_id'] = 1;
+		// Other forum
+		$post_data_base['post_id'] = 1;
+		$post_data_base['forum_id'] = 20;
 		$event_data_base[$for_post_test ? 'post_data' : 'row'] = $post_data_base;
 		if ($for_post_test)
 		{
 			$event_data_base['topic_data'] = $post_data_base;
 		}
 
-		$event_datasets['f1_s_true'] = clone $event_data_base;
-		$event_datasets['f1_s_false'] = clone  $event_datasets['f1_f_true'];
-		$event_datasets['f1_s_false']['s_cannot_edit'] = true;
-		$event_datasets['f1_s_time'] = clone $event_data_base;
-		$event_datasets['f1_s_time']['s_cannot_edit_time'] = true;
-		$event_datasets['f1_s_null'] = clone $event_datasets['f1_s_time'];
-		$event_datasets['f1_s_null']['s_cannot_edit'] = true;
+		$event_datasets['f20_f_true'] = $event_data_base;
+		$event_datasets['f20_f_false'] = $event_data_base;
+		$event_datasets['f20_f_false']['s_cannot_edit'] = true;
+		$event_datasets['f20_f_time'] = $event_data_base;
+		$event_datasets['f20_f_time']['s_cannot_edit_time'] = true;
+		$event_datasets['f20_f_null'] = $event_data_base;
+		$event_datasets['f20_f_null']['s_cannot_edit'] = true;
+		$event_datasets['f20_f_null']['s_cannot_edit_time'] = true;
+
+		// Once more with first post != post_id
+		$post_data_base['post_id'] = 2;
+		$event_data_base[$for_post_test ? 'post_data' : 'row'] = $post_data_base;
+		if ($for_post_test)
+		{
+			$event_data_base['topic_data'] = $post_data_base;
+		}
+
+		$event_datasets['f20_s_true'] = $event_data_base;
+		$event_datasets['f20_s_false'] = $event_data_base;
+		$event_datasets['f20_s_false']['s_cannot_edit'] = true;
+		$event_datasets['f20_s_time'] = $event_data_base;
+		$event_datasets['f20_s_time']['s_cannot_edit_time'] = true;
+		$event_datasets['f20_s_null'] = $event_data_base;
+		$event_datasets['f20_s_null']['s_cannot_edit'] = true;
+		$event_datasets['f20_s_null']['s_cannot_edit_time'] = true;
 
 		// This is a huge number of combinations...
 		return array(
+			// Correct user_id ==========================================================================================
 			// f20_s
 			// ACL to check users permissions, Event containing start data, user_id, Event containing expected result data
-			array($acl_get_map['all'], 			$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_true']),
+			// Expected behavior: Allow all
+			array($acl_get_map['all'], 			$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_true']), // 0
 			array($acl_get_map['all'], 			$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_true']),
 			array($acl_get_map['all'], 			$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_true']),
-			array($acl_get_map['all'], 			$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_true']), // This might be wrong?
-			array($acl_get_map['all_first'], 	$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_false']), // 5
-			array($acl_get_map['all_first'], 	$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_false']),
-			array($acl_get_map['all_first'], 	$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_false']),
-			array($acl_get_map['all_first'], 	$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_false']),
+			array($acl_get_map['all'], 			$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_true']),
+			// Expected behavior: Leave cannot_edit_time as is, but deny edit
+			array($acl_get_map['all_first'], 	$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_false']),
+			array($acl_get_map['all_first'], 	$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_false']), // 5
+			array($acl_get_map['all_first'], 	$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_null']),
+			array($acl_get_map['all_first'], 	$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_null']),
+			// Expected behavior: Leave cannot_edit_time as is, but deny edit
 			array($acl_get_map['edit_first'], 	$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_false']),
-			array($acl_get_map['edit_first'], 	$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_false']), // 10
-			array($acl_get_map['edit_first'], 	$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_false']),
-			array($acl_get_map['edit_first'], 	$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_false']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_false']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_null']), // 10
+			array($acl_get_map['edit_first'], 	$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_null']),
+			// Expected behavior: Leave cannot_edit_time as is, but deny edit
 			array($acl_get_map['time_first'], 	$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_false']),
+			array($acl_get_map['time_first'], 	$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_false']),
+			array($acl_get_map['time_first'], 	$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_null']),
+			array($acl_get_map['time_first'], 	$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_null']), // 15
+			// Expected behavior: Allow all
 			array($acl_get_map['all_reply'], 	$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_true']),
-			array($acl_get_map['all_reply'], 	$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_true']), // 15
+			array($acl_get_map['all_reply'], 	$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_true']),
 			array($acl_get_map['all_reply'], 	$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_true']),
 			array($acl_get_map['all_reply'], 	$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_true']),
-			array($acl_get_map['edit_reply'], 	$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_true']),
+			// Expected behavior: Leave cannot_edit_time as is, but allow edit
+			array($acl_get_map['edit_reply'], 	$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_true']), // 20
 			array($acl_get_map['edit_reply'], 	$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_true']),
-			array($acl_get_map['edit_reply'], 	$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_time']), // 20
+			array($acl_get_map['edit_reply'], 	$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_time']),
 			array($acl_get_map['edit_reply'], 	$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_time']),
+			// These rights are rubbish - no edit rights, but allow edit time. Expected behavior: allow edit time but deny edit
 			array($acl_get_map['time_reply'], 	$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_false']),
-			array($acl_get_map['time_reply'], 	$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_false']),
+			array($acl_get_map['time_reply'], 	$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_false']), // 25
 			array($acl_get_map['time_reply'], 	$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_false']),
-			array($acl_get_map['time_reply'], 	$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_false']), // 25
+			array($acl_get_map['time_reply'], 	$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_false']),
+			// Expected behavior: Leave cannot_edit_time as is, but deny edit
+			array($acl_get_map['none'],			$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_false']),
+			array($acl_get_map['none'],			$event_datasets['f20_s_false'],	1, $event_datasets['f20_s_false']),
+			array($acl_get_map['none'],			$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_null']), // 30
+			array($acl_get_map['none'],			$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_null']),
+
+			// f20_f
+			// Expected behavior: Allow all
+			array($acl_get_map['all'], 			$event_datasets['f20_f_true'], 	1, $event_datasets['f20_f_true']), // 35
+			array($acl_get_map['all'], 			$event_datasets['f20_f_false'], 1, $event_datasets['f20_f_true']),
+			array($acl_get_map['all'], 			$event_datasets['f20_f_time'], 	1, $event_datasets['f20_f_true']),
+			array($acl_get_map['all'], 			$event_datasets['f20_f_null'], 	1, $event_datasets['f20_f_true']),
+			// Expected behavior: Allow all
+			array($acl_get_map['all_first'], 	$event_datasets['f20_f_true'], 	1, $event_datasets['f20_f_true']),
+			array($acl_get_map['all_first'], 	$event_datasets['f20_f_false'], 1, $event_datasets['f20_f_true']), // 40
+			array($acl_get_map['all_first'], 	$event_datasets['f20_f_time'], 	1, $event_datasets['f20_f_true']),
+			array($acl_get_map['all_first'], 	$event_datasets['f20_f_null'], 	1, $event_datasets['f20_f_true']),
+			// Expected behavior: Leave cannot_edit_time as is, but allow edit
+			array($acl_get_map['edit_first'], 	$event_datasets['f20_f_true'], 	1, $event_datasets['f20_f_true']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f20_f_false'], 1, $event_datasets['f20_f_true']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f20_f_time'], 	1, $event_datasets['f20_f_time']), // 45
+			array($acl_get_map['edit_first'], 	$event_datasets['f20_f_null'], 	1, $event_datasets['f20_f_time']),
+			// These rights are rubbish - no edit rights, but allow edit time. Expected behavior: allow edit time but deny edit
+			array($acl_get_map['time_first'], 	$event_datasets['f20_f_true'], 	1, $event_datasets['f20_f_false']),
+			array($acl_get_map['time_first'], 	$event_datasets['f20_f_false'], 1, $event_datasets['f20_f_false']),
+			array($acl_get_map['time_first'], 	$event_datasets['f20_f_time'], 	1, $event_datasets['f20_f_false']),
+			array($acl_get_map['time_first'], 	$event_datasets['f20_f_null'], 	1, $event_datasets['f20_f_false']), // 50
+			// Expected behavior: Leave cannot_edit_time as is, but deny edit
+			array($acl_get_map['all_reply'], 	$event_datasets['f20_f_true'], 	1, $event_datasets['f20_f_false']),
+			array($acl_get_map['all_reply'], 	$event_datasets['f20_f_false'], 1, $event_datasets['f20_f_false']),
+			array($acl_get_map['all_reply'], 	$event_datasets['f20_f_time'], 	1, $event_datasets['f20_f_null']),
+			array($acl_get_map['all_reply'], 	$event_datasets['f20_f_null'], 	1, $event_datasets['f20_f_null']),
+			// Expected behavior: Leave cannot_edit_time as is, but deny edit
+			array($acl_get_map['edit_reply'], 	$event_datasets['f20_f_true'], 	1, $event_datasets['f20_f_false']), // 55
+			array($acl_get_map['edit_reply'], 	$event_datasets['f20_f_false'], 1, $event_datasets['f20_f_false']),
+			array($acl_get_map['edit_reply'], 	$event_datasets['f20_f_time'], 	1, $event_datasets['f20_f_null']),
+			array($acl_get_map['edit_reply'], 	$event_datasets['f20_f_null'], 	1, $event_datasets['f20_f_null']),
+			// Expected behavior: Leave cannot_edit_time as is, but deny edit
+			array($acl_get_map['time_reply'], 	$event_datasets['f20_f_true'], 	1, $event_datasets['f20_f_false']),
+			array($acl_get_map['time_reply'], 	$event_datasets['f20_f_false'], 1, $event_datasets['f20_f_false']), // 60
+			array($acl_get_map['time_reply'], 	$event_datasets['f20_f_time'], 	1, $event_datasets['f20_f_null']),
+			array($acl_get_map['time_reply'], 	$event_datasets['f20_f_null'], 	1, $event_datasets['f20_f_null']),
+			// Expected behavior: Leave cannot_edit_time as is, but deny edit
+			array($acl_get_map['none'],			$event_datasets['f20_f_true'], 	1, $event_datasets['f20_f_false']),
+			array($acl_get_map['none'],			$event_datasets['f20_f_false'],	1, $event_datasets['f20_f_false']),
+			array($acl_get_map['none'],			$event_datasets['f20_f_time'], 	1, $event_datasets['f20_f_null']), // 65
+			array($acl_get_map['none'],			$event_datasets['f20_f_null'], 	1, $event_datasets['f20_f_null']),
+
+			// f1_s
+			// Expected behavior for all entries: Deny edit, leave edit_time as is
+			array($acl_get_map['all'], 			$event_datasets['f1_s_true'], 	1, $event_datasets['f1_s_false']),
+			array($acl_get_map['all'], 			$event_datasets['f1_s_false'],  1, $event_datasets['f1_s_false']),
+			array($acl_get_map['all'], 			$event_datasets['f1_s_time'], 	1, $event_datasets['f1_s_null']),
+			array($acl_get_map['all'], 			$event_datasets['f1_s_null'], 	1, $event_datasets['f1_s_null']), // 70
+
+			array($acl_get_map['all_first'], 	$event_datasets['f1_s_true'], 	1, $event_datasets['f1_s_false']),
+			array($acl_get_map['all_first'], 	$event_datasets['f1_s_false'],  1, $event_datasets['f1_s_false']),
+			array($acl_get_map['all_first'], 	$event_datasets['f1_s_time'], 	1, $event_datasets['f1_s_null']),
+			array($acl_get_map['all_first'], 	$event_datasets['f1_s_null'], 	1, $event_datasets['f1_s_null']),
+
+			array($acl_get_map['edit_first'], 	$event_datasets['f1_s_true'], 	1, $event_datasets['f1_s_false']), // 75
+			array($acl_get_map['edit_first'], 	$event_datasets['f1_s_false'],  1, $event_datasets['f1_s_false']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f1_s_time'], 	1, $event_datasets['f1_s_null']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f1_s_null'], 	1, $event_datasets['f1_s_null']),
+
+			array($acl_get_map['time_first'], 	$event_datasets['f1_s_true'], 	1, $event_datasets['f1_s_false']),
+			array($acl_get_map['time_first'], 	$event_datasets['f1_s_false'], 	1, $event_datasets['f1_s_false']), // 80
+			array($acl_get_map['time_first'], 	$event_datasets['f1_s_time'], 	1, $event_datasets['f1_s_null']),
+			array($acl_get_map['time_first'], 	$event_datasets['f1_s_null'], 	1, $event_datasets['f1_s_null']),
+
+			array($acl_get_map['all_reply'], 	$event_datasets['f1_s_true'], 	1, $event_datasets['f1_s_false']),
+			array($acl_get_map['all_reply'], 	$event_datasets['f1_s_false'],  1, $event_datasets['f1_s_false']),
+			array($acl_get_map['all_reply'], 	$event_datasets['f1_s_time'], 	1, $event_datasets['f1_s_null']), // 85
+			array($acl_get_map['all_reply'], 	$event_datasets['f1_s_null'], 	1, $event_datasets['f1_s_null']),
+
+			array($acl_get_map['edit_reply'], 	$event_datasets['f1_s_true'], 	1, $event_datasets['f1_s_false']),
+			array($acl_get_map['edit_reply'], 	$event_datasets['f1_s_false'], 	1, $event_datasets['f1_s_false']),
+			array($acl_get_map['edit_reply'], 	$event_datasets['f1_s_time'], 	1, $event_datasets['f1_s_null']),
+			array($acl_get_map['edit_reply'], 	$event_datasets['f1_s_null'], 	1, $event_datasets['f1_s_null']), // 90
+
+			array($acl_get_map['time_reply'], 	$event_datasets['f1_s_true'], 	1, $event_datasets['f1_s_false']),
+			array($acl_get_map['time_reply'], 	$event_datasets['f1_s_false'], 	1, $event_datasets['f1_s_false']),
+			array($acl_get_map['time_reply'], 	$event_datasets['f1_s_time'], 	1, $event_datasets['f1_s_null']),
+			array($acl_get_map['time_reply'], 	$event_datasets['f1_s_null'], 	1, $event_datasets['f1_s_null']),
+
+			array($acl_get_map['none'],			$event_datasets['f1_s_true'], 	1, $event_datasets['f1_s_false']), // 95
+			array($acl_get_map['none'],			$event_datasets['f1_s_false'],	1, $event_datasets['f1_s_false']),
+			array($acl_get_map['none'],			$event_datasets['f1_s_time'], 	1, $event_datasets['f1_s_null']),
+			array($acl_get_map['none'],			$event_datasets['f1_s_null'], 	1, $event_datasets['f1_s_null']),
+
+			// f1_f
+			// Expected behavior for all entries: Deny edit, leave edit_time as is
+			array($acl_get_map['all'], 			$event_datasets['f1_f_true'], 	1, $event_datasets['f1_f_false']),
+			array($acl_get_map['all'], 			$event_datasets['f1_f_false'],  1, $event_datasets['f1_f_false']), // 100
+			array($acl_get_map['all'], 			$event_datasets['f1_f_time'], 	1, $event_datasets['f1_f_null']),
+			array($acl_get_map['all'], 			$event_datasets['f1_f_null'], 	1, $event_datasets['f1_f_null']),
+
+			array($acl_get_map['all_first'], 	$event_datasets['f1_f_true'], 	1, $event_datasets['f1_f_false']),
+			array($acl_get_map['all_first'], 	$event_datasets['f1_f_false'],  1, $event_datasets['f1_f_false']),
+			array($acl_get_map['all_first'], 	$event_datasets['f1_f_time'], 	1, $event_datasets['f1_f_null']), // 105
+			array($acl_get_map['all_first'], 	$event_datasets['f1_f_null'], 	1, $event_datasets['f1_f_null']),
+
+			array($acl_get_map['edit_first'], 	$event_datasets['f1_f_true'], 	1, $event_datasets['f1_f_false']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f1_f_false'],  1, $event_datasets['f1_f_false']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f1_f_time'], 	1, $event_datasets['f1_f_null']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f1_f_null'], 	1, $event_datasets['f1_f_null']), // 110
+
+			array($acl_get_map['time_first'], 	$event_datasets['f1_f_true'], 	1, $event_datasets['f1_f_false']),
+			array($acl_get_map['time_first'], 	$event_datasets['f1_f_false'], 	1, $event_datasets['f1_f_false']),
+			array($acl_get_map['time_first'], 	$event_datasets['f1_f_time'], 	1, $event_datasets['f1_f_null']),
+			array($acl_get_map['time_first'], 	$event_datasets['f1_f_null'], 	1, $event_datasets['f1_f_null']),
+
+			array($acl_get_map['all_reply'], 	$event_datasets['f1_f_true'], 	1, $event_datasets['f1_f_false']), // 115
+			array($acl_get_map['all_reply'], 	$event_datasets['f1_f_false'],  1, $event_datasets['f1_f_false']),
+			array($acl_get_map['all_reply'], 	$event_datasets['f1_f_time'], 	1, $event_datasets['f1_f_null']),
+			array($acl_get_map['all_reply'], 	$event_datasets['f1_f_null'], 	1, $event_datasets['f1_f_null']),
+
+			array($acl_get_map['edit_reply'], 	$event_datasets['f1_f_true'], 	1, $event_datasets['f1_f_false']),
+			array($acl_get_map['edit_reply'], 	$event_datasets['f1_f_false'], 	1, $event_datasets['f1_f_false']), // 120
+			array($acl_get_map['edit_reply'], 	$event_datasets['f1_f_time'], 	1, $event_datasets['f1_f_null']),
+			array($acl_get_map['edit_reply'], 	$event_datasets['f1_f_null'], 	1, $event_datasets['f1_f_null']),
+
+			array($acl_get_map['time_reply'], 	$event_datasets['f1_f_true'], 	1, $event_datasets['f1_f_false']),
+			array($acl_get_map['time_reply'], 	$event_datasets['f1_f_false'], 	1, $event_datasets['f1_f_false']),
+			array($acl_get_map['time_reply'], 	$event_datasets['f1_f_time'], 	1, $event_datasets['f1_f_null']), // 125
+			array($acl_get_map['time_reply'], 	$event_datasets['f1_f_null'], 	1, $event_datasets['f1_f_null']),
+
+			array($acl_get_map['none'],			$event_datasets['f1_f_true'], 	1, $event_datasets['f1_f_false']),
+			array($acl_get_map['none'],			$event_datasets['f1_f_false'],	1, $event_datasets['f1_f_false']),
+			array($acl_get_map['none'],			$event_datasets['f1_f_time'], 	1, $event_datasets['f1_f_null']),
+			array($acl_get_map['none'],			$event_datasets['f1_f_null'], 	1, $event_datasets['f1_f_null']), // 130
+
+			// Wrong user_id ==========================================================================================
+			// Expected behavior for all entries: Follow rights for cannot_edit_time regardless of authorship but always deny edit
+			// So compared to above, true -> false and time -> null
+			// Add 131 to all line numbers from here on
+			// f20_s
+			// Expected behavior: Allow all
+			array($acl_get_map['all'], 			$event_datasets['f20_s_true'], 	2, $event_datasets['f20_s_false']), // 0
+			array($acl_get_map['all'], 			$event_datasets['f20_s_false'], 2, $event_datasets['f20_s_false']),
+			array($acl_get_map['all'], 			$event_datasets['f20_s_time'], 	2, $event_datasets['f20_s_false']),
+			array($acl_get_map['all'], 			$event_datasets['f20_s_null'], 	2, $event_datasets['f20_s_false']),
+			// Expected behavior: Leave cannot_edit_time as is, but deny edit
+			array($acl_get_map['all_first'], 	$event_datasets['f20_s_true'], 	2, $event_datasets['f20_s_false']),
+			array($acl_get_map['all_first'], 	$event_datasets['f20_s_false'], 2, $event_datasets['f20_s_false']), // 5
+			array($acl_get_map['all_first'], 	$event_datasets['f20_s_time'], 	2, $event_datasets['f20_s_null']),
+			array($acl_get_map['all_first'], 	$event_datasets['f20_s_null'], 	2, $event_datasets['f20_s_null']),
+			// Expected behavior: Leave cannot_edit_time as is, but deny edit
+			array($acl_get_map['edit_first'], 	$event_datasets['f20_s_true'], 	2, $event_datasets['f20_s_false']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f20_s_false'], 2, $event_datasets['f20_s_false']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f20_s_time'], 	2, $event_datasets['f20_s_null']), // 10
+			array($acl_get_map['edit_first'], 	$event_datasets['f20_s_null'], 	2, $event_datasets['f20_s_null']),
+			// Expected behavior: Leave cannot_edit_time as is, but deny edit
+			array($acl_get_map['time_first'], 	$event_datasets['f20_s_true'], 	2, $event_datasets['f20_s_false']),
+			array($acl_get_map['time_first'], 	$event_datasets['f20_s_false'], 2, $event_datasets['f20_s_false']),
+			array($acl_get_map['time_first'], 	$event_datasets['f20_s_time'], 	2, $event_datasets['f20_s_null']),
+			array($acl_get_map['time_first'], 	$event_datasets['f20_s_null'], 	2, $event_datasets['f20_s_null']), // 15
+			// Expected behavior: Allow all
+			array($acl_get_map['all_reply'], 	$event_datasets['f20_s_true'], 	2, $event_datasets['f20_s_false']),
+			array($acl_get_map['all_reply'], 	$event_datasets['f20_s_false'], 2, $event_datasets['f20_s_false']),
+			array($acl_get_map['all_reply'], 	$event_datasets['f20_s_time'], 	2, $event_datasets['f20_s_false']),
+			array($acl_get_map['all_reply'], 	$event_datasets['f20_s_null'], 	2, $event_datasets['f20_s_false']),
+			// Expected behavior: Leave cannot_edit_time as is, but allow edit
+			array($acl_get_map['edit_reply'], 	$event_datasets['f20_s_true'], 	2, $event_datasets['f20_s_false']), // 20
+			array($acl_get_map['edit_reply'], 	$event_datasets['f20_s_false'], 2, $event_datasets['f20_s_false']),
+			array($acl_get_map['edit_reply'], 	$event_datasets['f20_s_time'], 	2, $event_datasets['f20_s_null']),
+			array($acl_get_map['edit_reply'], 	$event_datasets['f20_s_null'], 	2, $event_datasets['f20_s_null']),
+			// These rights are rubbish - no edit rights, but allow edit time. Expected behavior: allow edit time but deny edit
+			array($acl_get_map['time_reply'], 	$event_datasets['f20_s_true'], 	2, $event_datasets['f20_s_false']),
+			array($acl_get_map['time_reply'], 	$event_datasets['f20_s_false'], 2, $event_datasets['f20_s_false']), // 25
+			array($acl_get_map['time_reply'], 	$event_datasets['f20_s_time'], 	2, $event_datasets['f20_s_false']),
+			array($acl_get_map['time_reply'], 	$event_datasets['f20_s_null'], 	2, $event_datasets['f20_s_false']),
+			// Expected behavior: Leave cannot_edit_time as is, but deny edit
+			array($acl_get_map['none'],			$event_datasets['f20_s_true'], 	2, $event_datasets['f20_s_false']),
+			array($acl_get_map['none'],			$event_datasets['f20_s_false'],	2, $event_datasets['f20_s_false']),
+			array($acl_get_map['none'],			$event_datasets['f20_s_time'], 	2, $event_datasets['f20_s_null']), // 30
+			array($acl_get_map['none'],			$event_datasets['f20_s_null'], 	2, $event_datasets['f20_s_null']),
+
+			// f20_f
+			// Expected behavior: Allow all
+			array($acl_get_map['all'], 			$event_datasets['f20_f_true'], 	2, $event_datasets['f20_f_false']), // 35
+			array($acl_get_map['all'], 			$event_datasets['f20_f_false'], 2, $event_datasets['f20_f_false']),
+			array($acl_get_map['all'], 			$event_datasets['f20_f_time'], 	2, $event_datasets['f20_f_false']),
+			array($acl_get_map['all'], 			$event_datasets['f20_f_null'], 	2, $event_datasets['f20_f_false']),
+			// Expected behavior: Allow all
+			array($acl_get_map['all_first'], 	$event_datasets['f20_f_true'], 	2, $event_datasets['f20_f_false']),
+			array($acl_get_map['all_first'], 	$event_datasets['f20_f_false'], 2, $event_datasets['f20_f_false']), // 40
+			array($acl_get_map['all_first'], 	$event_datasets['f20_f_time'], 	2, $event_datasets['f20_f_false']),
+			array($acl_get_map['all_first'], 	$event_datasets['f20_f_null'], 	2, $event_datasets['f20_f_false']),
+			// Expected behavior: Leave cannot_edit_time as is, but allow edit
+			array($acl_get_map['edit_first'], 	$event_datasets['f20_f_true'], 	2, $event_datasets['f20_f_false']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f20_f_false'], 2, $event_datasets['f20_f_false']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f20_f_time'], 	2, $event_datasets['f20_f_null']), // 45
+			array($acl_get_map['edit_first'], 	$event_datasets['f20_f_null'], 	2, $event_datasets['f20_f_null']),
+			// These rights are rubbish - no edit rights, but allow edit time. Expected behavior: allow edit time but deny edit
+			array($acl_get_map['time_first'], 	$event_datasets['f20_f_true'], 	2, $event_datasets['f20_f_false']),
+			array($acl_get_map['time_first'], 	$event_datasets['f20_f_false'], 2, $event_datasets['f20_f_false']),
+			array($acl_get_map['time_first'], 	$event_datasets['f20_f_time'], 	2, $event_datasets['f20_f_false']),
+			array($acl_get_map['time_first'], 	$event_datasets['f20_f_null'], 	2, $event_datasets['f20_f_false']), // 50
+			// Expected behavior: Leave cannot_edit_time as is, but deny edit
+			array($acl_get_map['all_reply'], 	$event_datasets['f20_f_true'], 	2, $event_datasets['f20_f_false']),
+			array($acl_get_map['all_reply'], 	$event_datasets['f20_f_false'], 2, $event_datasets['f20_f_false']),
+			array($acl_get_map['all_reply'], 	$event_datasets['f20_f_time'], 	2, $event_datasets['f20_f_null']),
+			array($acl_get_map['all_reply'], 	$event_datasets['f20_f_null'], 	2, $event_datasets['f20_f_null']),
+			// Expected behavior: Leave cannot_edit_time as is, but deny edit
+			array($acl_get_map['edit_reply'], 	$event_datasets['f20_f_true'], 	2, $event_datasets['f20_f_false']), // 55
+			array($acl_get_map['edit_reply'], 	$event_datasets['f20_f_false'], 2, $event_datasets['f20_f_false']),
+			array($acl_get_map['edit_reply'], 	$event_datasets['f20_f_time'], 	2, $event_datasets['f20_f_null']),
+			array($acl_get_map['edit_reply'], 	$event_datasets['f20_f_null'], 	2, $event_datasets['f20_f_null']),
+			// Expected behavior: Leave cannot_edit_time as is, but deny edit
+			array($acl_get_map['time_reply'], 	$event_datasets['f20_f_true'], 	2, $event_datasets['f20_f_false']),
+			array($acl_get_map['time_reply'], 	$event_datasets['f20_f_false'], 2, $event_datasets['f20_f_false']), // 60
+			array($acl_get_map['time_reply'], 	$event_datasets['f20_f_time'], 	2, $event_datasets['f20_f_null']),
+			array($acl_get_map['time_reply'], 	$event_datasets['f20_f_null'], 	2, $event_datasets['f20_f_null']),
+			// Expected behavior: Leave cannot_edit_time as is, but deny edit
+			array($acl_get_map['none'],			$event_datasets['f20_f_true'], 	2, $event_datasets['f20_f_false']),
+			array($acl_get_map['none'],			$event_datasets['f20_f_false'],	2, $event_datasets['f20_f_false']),
+			array($acl_get_map['none'],			$event_datasets['f20_f_time'], 	2, $event_datasets['f20_f_null']), // 65
+			array($acl_get_map['none'],			$event_datasets['f20_f_null'], 	2, $event_datasets['f20_f_null']),
+
+			// f1_s
+			// Expected behavior for all entries: Deny edit, leave edit_time as is
+			array($acl_get_map['all'], 			$event_datasets['f1_s_true'], 	2, $event_datasets['f1_s_false']),
+			array($acl_get_map['all'], 			$event_datasets['f1_s_false'],  2, $event_datasets['f1_s_false']),
+			array($acl_get_map['all'], 			$event_datasets['f1_s_time'], 	2, $event_datasets['f1_s_null']),
+			array($acl_get_map['all'], 			$event_datasets['f1_s_null'], 	2, $event_datasets['f1_s_null']), // 70
+
+			array($acl_get_map['all_first'], 	$event_datasets['f1_s_true'], 	2, $event_datasets['f1_s_false']),
+			array($acl_get_map['all_first'], 	$event_datasets['f1_s_false'],  2, $event_datasets['f1_s_false']),
+			array($acl_get_map['all_first'], 	$event_datasets['f1_s_time'], 	2, $event_datasets['f1_s_null']),
+			array($acl_get_map['all_first'], 	$event_datasets['f1_s_null'], 	2, $event_datasets['f1_s_null']),
+
+			array($acl_get_map['edit_first'], 	$event_datasets['f1_s_true'], 	2, $event_datasets['f1_s_false']), // 75
+			array($acl_get_map['edit_first'], 	$event_datasets['f1_s_false'],  2, $event_datasets['f1_s_false']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f1_s_time'], 	2, $event_datasets['f1_s_null']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f1_s_null'], 	2, $event_datasets['f1_s_null']),
+
+			array($acl_get_map['time_first'], 	$event_datasets['f1_s_true'], 	2, $event_datasets['f1_s_false']),
+			array($acl_get_map['time_first'], 	$event_datasets['f1_s_false'], 	2, $event_datasets['f1_s_false']), // 80
+			array($acl_get_map['time_first'], 	$event_datasets['f1_s_time'], 	2, $event_datasets['f1_s_null']),
+			array($acl_get_map['time_first'], 	$event_datasets['f1_s_null'], 	2, $event_datasets['f1_s_null']),
+
+			array($acl_get_map['all_reply'], 	$event_datasets['f1_s_true'], 	2, $event_datasets['f1_s_false']),
+			array($acl_get_map['all_reply'], 	$event_datasets['f1_s_false'],  2, $event_datasets['f1_s_false']),
+			array($acl_get_map['all_reply'], 	$event_datasets['f1_s_time'], 	2, $event_datasets['f1_s_null']), // 85
+			array($acl_get_map['all_reply'], 	$event_datasets['f1_s_null'], 	2, $event_datasets['f1_s_null']),
+
+			array($acl_get_map['edit_reply'], 	$event_datasets['f1_s_true'], 	2, $event_datasets['f1_s_false']),
+			array($acl_get_map['edit_reply'], 	$event_datasets['f1_s_false'], 	2, $event_datasets['f1_s_false']),
+			array($acl_get_map['edit_reply'], 	$event_datasets['f1_s_time'], 	2, $event_datasets['f1_s_null']),
+			array($acl_get_map['edit_reply'], 	$event_datasets['f1_s_null'], 	2, $event_datasets['f1_s_null']), // 90
+
+			array($acl_get_map['time_reply'], 	$event_datasets['f1_s_true'], 	2, $event_datasets['f1_s_false']),
+			array($acl_get_map['time_reply'], 	$event_datasets['f1_s_false'], 	2, $event_datasets['f1_s_false']),
+			array($acl_get_map['time_reply'], 	$event_datasets['f1_s_time'], 	2, $event_datasets['f1_s_null']),
+			array($acl_get_map['time_reply'], 	$event_datasets['f1_s_null'], 	2, $event_datasets['f1_s_null']),
+
+			array($acl_get_map['none'],			$event_datasets['f1_s_true'], 	2, $event_datasets['f1_s_false']), // 95
+			array($acl_get_map['none'],			$event_datasets['f1_s_false'],	2, $event_datasets['f1_s_false']),
+			array($acl_get_map['none'],			$event_datasets['f1_s_time'], 	2, $event_datasets['f1_s_null']),
+			array($acl_get_map['none'],			$event_datasets['f1_s_null'], 	2, $event_datasets['f1_s_null']),
+
+			// f1_f
+			// Expected behavior for all entries: Deny edit, leave edit_time as is
+			array($acl_get_map['all'], 			$event_datasets['f1_f_true'], 	2, $event_datasets['f1_f_false']),
+			array($acl_get_map['all'], 			$event_datasets['f1_f_false'],  2, $event_datasets['f1_f_false']), // 100
+			array($acl_get_map['all'], 			$event_datasets['f1_f_time'], 	2, $event_datasets['f1_f_null']),
+			array($acl_get_map['all'], 			$event_datasets['f1_f_null'], 	2, $event_datasets['f1_f_null']),
+
+			array($acl_get_map['all_first'], 	$event_datasets['f1_f_true'], 	2, $event_datasets['f1_f_false']),
+			array($acl_get_map['all_first'], 	$event_datasets['f1_f_false'],  2, $event_datasets['f1_f_false']),
+			array($acl_get_map['all_first'], 	$event_datasets['f1_f_time'], 	2, $event_datasets['f1_f_null']), // 105
+			array($acl_get_map['all_first'], 	$event_datasets['f1_f_null'], 	2, $event_datasets['f1_f_null']),
+
+			array($acl_get_map['edit_first'], 	$event_datasets['f1_f_true'], 	2, $event_datasets['f1_f_false']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f1_f_false'],  2, $event_datasets['f1_f_false']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f1_f_time'], 	2, $event_datasets['f1_f_null']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f1_f_null'], 	2, $event_datasets['f1_f_null']), // 110
+
+			array($acl_get_map['time_first'], 	$event_datasets['f1_f_true'], 	2, $event_datasets['f1_f_false']),
+			array($acl_get_map['time_first'], 	$event_datasets['f1_f_false'], 	2, $event_datasets['f1_f_false']),
+			array($acl_get_map['time_first'], 	$event_datasets['f1_f_time'], 	2, $event_datasets['f1_f_null']),
+			array($acl_get_map['time_first'], 	$event_datasets['f1_f_null'], 	2, $event_datasets['f1_f_null']),
+
+			array($acl_get_map['all_reply'], 	$event_datasets['f1_f_true'], 	2, $event_datasets['f1_f_false']), // 115
+			array($acl_get_map['all_reply'], 	$event_datasets['f1_f_false'],  2, $event_datasets['f1_f_false']),
+			array($acl_get_map['all_reply'], 	$event_datasets['f1_f_time'], 	2, $event_datasets['f1_f_null']),
+			array($acl_get_map['all_reply'], 	$event_datasets['f1_f_null'], 	2, $event_datasets['f1_f_null']),
+
+			array($acl_get_map['edit_reply'], 	$event_datasets['f1_f_true'], 	2, $event_datasets['f1_f_false']),
+			array($acl_get_map['edit_reply'], 	$event_datasets['f1_f_false'], 	2, $event_datasets['f1_f_false']), // 120
+			array($acl_get_map['edit_reply'], 	$event_datasets['f1_f_time'], 	2, $event_datasets['f1_f_null']),
+			array($acl_get_map['edit_reply'], 	$event_datasets['f1_f_null'], 	2, $event_datasets['f1_f_null']),
+
+			array($acl_get_map['time_reply'], 	$event_datasets['f1_f_true'], 	2, $event_datasets['f1_f_false']),
+			array($acl_get_map['time_reply'], 	$event_datasets['f1_f_false'], 	2, $event_datasets['f1_f_false']),
+			array($acl_get_map['time_reply'], 	$event_datasets['f1_f_time'], 	2, $event_datasets['f1_f_null']), // 125
+			array($acl_get_map['time_reply'], 	$event_datasets['f1_f_null'], 	2, $event_datasets['f1_f_null']),
+
+			array($acl_get_map['none'],			$event_datasets['f1_f_true'], 	2, $event_datasets['f1_f_false']),
+			array($acl_get_map['none'],			$event_datasets['f1_f_false'],	2, $event_datasets['f1_f_false']),
+			array($acl_get_map['none'],			$event_datasets['f1_f_time'], 	2, $event_datasets['f1_f_null']),
+			array($acl_get_map['none'],			$event_datasets['f1_f_null'], 	2, $event_datasets['f1_f_null']), // 130
 		);
 
 	}

@@ -46,6 +46,10 @@ class listener implements EventSubscriberInterface
 		{
 			// May still be authed if f_edit_first_post is set
 			$event['is_authed'] = $this->auth->acl_get('f_edit_first_post', $event['forum_id']);
+
+			// May also be authed if f_edit is set
+			// overrule any additional extension run before this one to keep things consistent
+			$event['is_authed'] = $event['is_authed'] || $this->auth->acl_get('f_edit', $event['forum_id']);
 		}
 	}
 
@@ -53,6 +57,7 @@ class listener implements EventSubscriberInterface
 	{
 		// Are we working on the first post of the topic?
 		$is_first_post = $event['post_data']['topic_first_post_id'] == $event['post_data']['post_id'];
+		$is_author = $event['post_data']['user_id'] == $this->user->data['user_id'];
 
 		// Time based editing
 		if ($event['s_cannot_edit_time'])
@@ -71,19 +76,20 @@ class listener implements EventSubscriberInterface
 		// Independent permissions for first post:
 		if($is_first_post)
 		{
-			// $event['s_cannot_edit'] is false if the user is the author of the post we want to edit
-			$event['s_cannot_edit'] = !(!$event['s_cannot_edit'] && $this->auth->acl_get('f_edit_first_post', $event['post_data']['forum_id']));
+			$event['s_cannot_edit'] = !($is_author && $this->auth->acl_get('f_edit_first_post', $event['post_data']['forum_id']));
 		}
 		else
 		{
 			// We need to check again for edit permissions because we bypassed that earlier
-			$event['s_cannot_edit'] = !(!$event['s_cannot_edit'] && $this->auth->acl_get('f_edit', $event['post_data']['forum_id']));
+			// Ignore data served by event because we changed the way this permission works
+			$event['s_cannot_edit'] = !($is_author && $this->auth->acl_get('f_edit', $event['post_data']['forum_id']));
 		}
 	}
 
 	public function viewtopic_edit($event)
 	{
 		$is_first_post = $event['topic_data']['topic_first_post_id'] == $event['row']['post_id'];
+		$is_author = $event['row']['user_id'] == $this->user->data['user_id'];
 
 		// Time based editing
 		if ($event['s_cannot_edit_time'])
@@ -102,13 +108,13 @@ class listener implements EventSubscriberInterface
 		// Independent permissions for first post:
 		if ($is_first_post)
 		{
-			$is_author = $event['row']['user_id'] == $this->user->data['user_id'];
 			$event['s_cannot_edit'] = !($is_author && $this->auth->acl_get('f_edit_first_post', $event['row']['forum_id']));
 		}
 		else
 		{
 			// We need to check again for edit permissions because we bypassed that earlier
-			$event['s_cannot_edit'] = !(!$event['s_cannot_edit'] && $this->auth->acl_get('f_edit', $event['row']['forum_id']));
+			// Ignore data served by event because we changed the way this permission works
+			$event['s_cannot_edit'] = !($is_author && $this->auth->acl_get('f_edit', $event['row']['forum_id']));
 		}
 	}
 
