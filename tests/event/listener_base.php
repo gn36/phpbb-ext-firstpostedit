@@ -108,6 +108,7 @@ class listener_base extends \phpbb_test_case
 			'user_id' => 1,
 		);
 
+		// Define basic events containing all information necessary
 		if($for_post_test)
 		{
 			$event_data_base = new \Symfony\Component\EventDispatcher\GenericEvent(null, array(
@@ -129,6 +130,15 @@ class listener_base extends \phpbb_test_case
 				's_cannot_edit_time' => false,
 			));
 		}
+
+		// Define some sets of events for specific test cases named f<nr>_[fs]_[text]
+		// f<nr> Post in Forum ID <nr>
+		// [fs] is [f]irst or [s]econd post to be edited
+		// [text] determines what permissions are set on the event prior to execution of this extension
+		//        	true - cannot_edit and cannot_edit_time are false
+		//			false - cannot_edit is true, cannot_edit_time is false
+		//			time - cannot_edit is false, cannot_edit_time is true
+		// 			null - cannot_edit and cannot_edit_time are true
 		$event_datasets = array();
 		$event_datasets['f1_f_true'] = clone $event_data_base;
 		$event_datasets['f1_f_false'] = clone  $event_datasets['f1_f_true'];
@@ -163,7 +173,7 @@ class listener_base extends \phpbb_test_case
 		}
 
 		$event_datasets['f20_s_true'] = clone $event_data_base;
-		$event_datasets['f20_s_false'] = clone $event_datasets['f20_f_true'];
+		$event_datasets['f20_s_false'] = clone $event_datasets['f20_s_true'];
 		$event_datasets['f20_s_false']['s_cannot_edit'] = true;
 		$event_datasets['f20_s_time'] = clone $event_data_base;
 		$event_datasets['f20_s_time']['s_cannot_edit_time'] = true;
@@ -193,27 +203,27 @@ class listener_base extends \phpbb_test_case
 			array($acl_get_map['all'], 			$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_true']),
 			array($acl_get_map['all'], 			$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_true']),
 			array($acl_get_map['all'], 			$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_true']), // This might be wrong?
-			array($acl_get_map['all_first'], 	$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_false']),
+			array($acl_get_map['all_first'], 	$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_false']), // 5
 			array($acl_get_map['all_first'], 	$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_false']),
 			array($acl_get_map['all_first'], 	$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_false']),
 			array($acl_get_map['all_first'], 	$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_false']),
 			array($acl_get_map['edit_first'], 	$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_false']),
-			array($acl_get_map['edit_first'], 	$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_false']),
+			array($acl_get_map['edit_first'], 	$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_false']), // 10
 			array($acl_get_map['edit_first'], 	$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_false']),
 			array($acl_get_map['edit_first'], 	$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_false']),
 			array($acl_get_map['time_first'], 	$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_false']),
 			array($acl_get_map['all_reply'], 	$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_true']),
-			array($acl_get_map['all_reply'], 	$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_true']),
+			array($acl_get_map['all_reply'], 	$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_true']), // 15
 			array($acl_get_map['all_reply'], 	$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_true']),
 			array($acl_get_map['all_reply'], 	$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_true']),
 			array($acl_get_map['edit_reply'], 	$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_true']),
 			array($acl_get_map['edit_reply'], 	$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_true']),
-			array($acl_get_map['edit_reply'], 	$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_time']),
+			array($acl_get_map['edit_reply'], 	$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_time']), // 20
 			array($acl_get_map['edit_reply'], 	$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_time']),
 			array($acl_get_map['time_reply'], 	$event_datasets['f20_s_true'], 	1, $event_datasets['f20_s_false']),
 			array($acl_get_map['time_reply'], 	$event_datasets['f20_s_false'], 1, $event_datasets['f20_s_false']),
 			array($acl_get_map['time_reply'], 	$event_datasets['f20_s_time'], 	1, $event_datasets['f20_s_false']),
-			array($acl_get_map['time_reply'], 	$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_false']),
+			array($acl_get_map['time_reply'], 	$event_datasets['f20_s_null'], 	1, $event_datasets['f20_s_false']), // 25
 		);
 
 	}
