@@ -105,7 +105,6 @@ class listener_base extends \phpbb_test_case
 			'topic_first_post_id' => 1,
 			'post_id' => 1,
 			'forum_id' => 1,
-			'user_id' => 1,
 		);
 
 		// Define basic events containing all information necessary
@@ -117,10 +116,12 @@ class listener_base extends \phpbb_test_case
 		);
 		if($for_post_test)
 		{
+			$post_data_base['poster_id'] = 1;
 			$event_data_base['post_data'] = $post_data_base;
 		}
 		else
 		{
+			$post_data_base['user_id'] = 1;
 			$event_data_base = array_merge($event_data_base, array(
 				'row' => $post_data_base,
 				'topic_data' => $post_data_base,

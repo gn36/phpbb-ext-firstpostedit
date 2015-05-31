@@ -57,7 +57,7 @@ class listener implements EventSubscriberInterface
 	{
 		// Are we working on the first post of the topic?
 		$is_first_post = $event['post_data']['topic_first_post_id'] == $event['post_data']['post_id'];
-		$is_author = $event['post_data']['user_id'] == $this->user->data['user_id'];
+		$is_author = $event['post_data']['poster_id'] == $this->user->data['user_id'];
 
 		// Time based editing
 		if ($event['s_cannot_edit_time'])
