@@ -3,7 +3,7 @@
 	"type": "phpbb-extension",
 	"description": "Allows differenciating editing permissions for the first post. Allows bypassing the max edit time setting for the first or all posts on a per-forum basis. If you use other extensions that change users edit permissions, please check thoroughly whether they still work correctly in combination with this extension.",
 	"homepage": "https://www.phpbb.de/community/",
-	"version": "1.2.1",
+	"version": "1.2.2-dev",
 	"time": "2014-05-09",
 	"license": "GPL-2.0",
 	"authors": [
@@ -24,6 +24,11 @@
 		"display-name": "gn36 - Customize first post edit permissions",
 		"soft-require": {
 			"phpbb/phpbb": ">=3.1.3-RC1"
+		},
+		"version-check": {
+			"host": "phpbb.gn36.de",
+			"directory": "/extensions/vinfo",
+			"filename": "phpbb-ext-hookup.json"
 		}
 	}
 }
