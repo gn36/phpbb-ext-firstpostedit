@@ -74,7 +74,7 @@ class listener implements EventSubscriberInterface
 		}
 
 		// Independent permissions for first post:
-		if($is_first_post)
+		if ($is_first_post)
 		{
 			$event['s_cannot_edit'] = !($is_author && $this->auth->acl_get('f_edit_first_post', $event['post_data']['forum_id']));
 		}
@@ -99,7 +99,7 @@ class listener implements EventSubscriberInterface
 			$event['s_cannot_edit_time'] = !($is_first_post && $allowed_forum);
 
 			// Other posts
-			if(!$is_first_post)
+			if (!$is_first_post)
 			{
 				$event['s_cannot_edit_time'] = !$this->auth->acl_get('f_time_edit', $event['row']['forum_id']);
 			}
