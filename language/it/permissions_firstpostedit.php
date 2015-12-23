@@ -23,7 +23,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	// Forum perms,
 	'ACL_F_TIME_FIRST_POST_EDIT'	=> 'Può ignorare il limite massimo per la modifica del primo messaggio dei propri argomenti',
-	'ACL_F_FIRST_POST_EDIT'			=> 'Può modificare il primo messaggio dei propri argomenti',
-	'ACL_F_EDIT_REPLY'				=> 'Può modificare le proprie risposte',
-	'ACL_F_TIME_EDIT'				=> 'Può modificare il limite massimo per la modifica delle proprie risposte',
+	'ACL_F_FIRST_POST_EDIT'		=> 'Può modificare il primo messaggio dei propri argomenti',
+	'ACL_F_EDIT_REPLY'		=> 'Può modificare le proprie risposte',
+	'ACL_F_TIME_EDIT'		=> 'Può ignorare il limite massimo per la modifica delle proprie risposte',
 ));
