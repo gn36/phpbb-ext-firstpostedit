@@ -114,7 +114,7 @@ class listener_base extends \phpbb_test_case
 			's_cannot_edit_locked' => false,
 			's_cannot_edit_time' => false,
 		);
-		if($for_post_test)
+		if ($for_post_test)
 		{
 			$post_data_base['poster_id'] = 1;
 			$event_data_base['post_data'] = $post_data_base;
