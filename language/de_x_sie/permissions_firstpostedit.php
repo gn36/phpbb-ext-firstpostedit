@@ -23,7 +23,9 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	// Forum perms,
 	'ACL_F_TIME_FIRST_POST_EDIT'	=> 'Kann max. Bearbeitungszeit beim Startbeitrag umgehen',
+	'ACL_F_TIME_LAST_POST_EDIT'		=> 'Kann max. Bearbeitungszeit beim letzten Antwortbeitrag umgehen',
 	'ACL_F_FIRST_POST_EDIT'			=> 'Kann eigene Startbeiträge bearbeiten',
+	'ACL_F_LAST_POST_EDIT'			=> 'Kann letzten Antwortbeitrag bearbeiten, falls eigener Beitr.',
 	'ACL_F_EDIT_REPLY'				=> 'Kann eigene Antwortbeiträge bearbeiten',
 	'ACL_F_TIME_EDIT'				=> 'Kann max. Bearbeitungszeit bei Antwortbeiträgen umgehen',
 ));

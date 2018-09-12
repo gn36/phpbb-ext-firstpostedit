@@ -41,7 +41,9 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	// Forum perms,
 	'ACL_F_TIME_FIRST_POST_EDIT'	=> 'Peut contourner la limite de temps autorisée pour modifier le premier message d’un sujet après l’avoir posté.',
+	'ACL_F_TIME_LAST_POST_EDIT'		=> 'Peut contourner la limite de temps autorisée pour modifier le dernière résponse d’un sujet.',
 	'ACL_F_FIRST_POST_EDIT'			=> 'Peut modifier le premier message de ses sujets.',
+	'ACL_F_LAST_POST_EDIT'			=> 'Peut modifier la dernière résponse d’un sujet, si c’est sa propre résponse',
 	'ACL_F_EDIT_REPLY'				=> 'Peut modifier ses réponses.',
 	'ACL_F_TIME_EDIT'				=> 'Peut contourner la limite de temps autorisée pour modifier sa réponse à un sujet après l’avoir posté.',
 ));
