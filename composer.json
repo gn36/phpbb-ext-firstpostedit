@@ -1,34 +1,33 @@
 {
-	"name": "gn36/firstpostedit",
-	"type": "phpbb-extension",
-	"description": "Allows differenciating editing permissions for the first post. Allows bypassing the max edit time setting for the first or all posts on a per-forum basis. If you use other extensions that change users edit permissions, please check thoroughly whether they still work correctly in combination with this extension.",
-	"homepage": "https://www.phpbb.de/community/",
-	"version": "1.2.2-dev",
-	"time": "2014-05-09",
-	"license": "GPL-2.0",
-	"authors": [
-		{
-			"name": "Martin Beckmann",
-			"email": "gn#36@phpbb.de",
-			"homepage": "https://www.phpbb.de/",
-			"role": "Developer"
+	"name" : "gn36/firstpostedit",
+	"type" : "phpbb-extension",
+	"description" : "Allows differenciating editing permissions for the first post. Allows bypassing the max edit time setting for the first or all posts on a per-forum basis. If you use other extensions that change users edit permissions, please check thoroughly whether they still work correctly in combination with this extension.",
+	"homepage" : "https://www.phpbb.de/community/",
+	"version" : "1.3.0-dev",
+	"time" : "2014-05-09",
+	"license" : "GPL-2.0",
+	"authors" : [{
+			"name" : "Martin Beckmann",
+			"email" : "gn#36@phpbb.de",
+			"homepage" : "https://www.phpbb.de/",
+			"role" : "Developer"
 		}
 	],
-	"require": {
-		"php": ">=5.3.3"
+	"require" : {
+		"php" : ">=5.3.3"
 	},
-	"require-dev": {
-		"phpbb/epv": "dev-master"
+	"require-dev" : {
+		"phpbb/epv" : "dev-master"
 	},
-	"extra": {
-		"display-name": "gn36 - Customize first post edit permissions",
-		"soft-require": {
-			"phpbb/phpbb": ">=3.1.3-RC1"
+	"extra" : {
+		"display-name" : "gn36 - Customize first post edit permissions",
+		"soft-require" : {
+			"phpbb/phpbb" : ">=3.1.3-RC1"
 		},
-		"version-check": {
-			"host": "phpbb.gn36.de",
-			"directory": "/extensions/vinfo",
-			"filename": "phpbb-ext-hookup.json"
+		"version-check" : {
+			"host" : "phpbb.gn36.de",
+			"directory" : "/extensions/vinfo",
+			"filename" : "phpbb-ext-hookup.json"
 		}
 	}
 }
