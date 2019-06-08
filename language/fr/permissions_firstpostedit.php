@@ -45,5 +45,5 @@ $lang = array_merge($lang, array(
 	'ACL_F_FIRST_POST_EDIT'			=> 'Peut modifier le premier message de ses sujets.',
 	'ACL_F_LAST_POST_EDIT'			=> 'Peut modifier le dernier message de chaque sujet, si il s’agit de son message et après l’avoir publié',
 	'ACL_F_EDIT_REPLY'				=> 'Peut modifier ses réponses.',
-	'ACL_F_TIME_EDIT'				=> 'Peut contourner la limite de temps autorisée pour modifier sa réponse à un sujet après l’avoir publié.',
+	'ACL_F_TIME_EDIT'				=> 'Peut contourner la limite de temps autorisée pour modifier sa réponse à un sujet après l’avoir publiée.',
 ));
