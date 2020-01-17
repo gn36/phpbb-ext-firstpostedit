@@ -43,8 +43,8 @@ class listener_post_edit_test extends listener_base
 		$dispatcher->dispatch('gn36.def_listen', $event);
 
 		// Modify expected result event to mimic correct dispatch data
-		$expected_result->setDispatcher($dispatcher);
-		$expected_result->setName('gn36.def_listen');
+		//$expected_result->setDispatcher($dispatcher);
+		//$expected_result->setName('gn36.def_listen');
 
 		// Check
 		$this->assertEquals($expected_result, $event);
