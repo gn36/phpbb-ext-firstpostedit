@@ -26,11 +26,14 @@ matrix:
       env:
         - DB=mysqli
         - PHPBB_BRANCH="3.2.x"
-# Test framework of 3.3 is incompatible to php 7.0.x or lower, so we cannot test there right now
-#    - php: 7.0
-#      env:
-#        - DB=mysqli
-#        - PHPBB_BRANCH="3.2.x"
+    - php: 7.0
+      env:
+        - DB=mysqli
+        - PHPBB_BRANCH="3.2.x"
+    - php: 5.6
+      env:
+        - DB=mysqli
+        - PHPBB_BRANCH="3.2.x"
   fast_finish: true
 
 env:
