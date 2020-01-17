@@ -21,7 +21,7 @@ class listener_base extends \phpbb_test_case
 	public function setUp()
 	{
 		parent::setUp();
-		$this->auth = $this->getMock('\phpbb\auth\auth');
+		$this->auth = $this->getMockBuilder('\phpbb\auth\auth')->getMock();
 		$this->user = $this->getMockBuilder('\phpbb\user')
 			->disableOriginalConstructor()
 			->getMock();
