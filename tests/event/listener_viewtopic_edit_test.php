@@ -42,10 +42,14 @@ class listener_viewtopic_edit_test extends listener_base
 		$dispatcher->addListener('gn36.def_listen', array($listener, 'viewtopic_edit'));
 		$dispatcher->dispatch('gn36.def_listen', $event);
 
-		// Modify expected result event to mimic correct dispatch data
-		//$expected_result->setDispatcher($dispatcher);
-		//$expected_result->setName('gn36.def_listen');
-
+		//Backwards compatibility (up to phpBB 3.2.x):
+		if (method_exists($expected_result, 'setDispatcher'))
+		{
+			// Modify expected result event to mimic correct dispatch data
+			$expected_result->setDispatcher($dispatcher);
+			$expected_result->setName('gn36.def_listen');
+		}
+		
 		// Check
 		$this->assertEquals($expected_result, $event);
 
