@@ -1,4 +1,4 @@
-# phpBB 3.1 Extension - gn36 - Customize first post edit permissions
+# phpBB 3.1 or later Extension - gn36 - Customize first post edit permissions
 
 This Extension allows differenciating editing permissions for the first post. It also allows bypassing the max edit time setting for the first or all posts on a per-forum basis. If you use other extensions that change users edit permissions, please check thoroughly whether they still work correctly in combination with this extension.
 
