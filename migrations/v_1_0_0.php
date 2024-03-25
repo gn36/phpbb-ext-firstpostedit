@@ -10,7 +10,7 @@ namespace gn36\firstpostedit\migrations;
 
 class v_1_0_0 extends \phpbb\db\migration\migration
 {
-	static public function depends_on()
+	public static function depends_on()
 	{
 		return array();
 	}
