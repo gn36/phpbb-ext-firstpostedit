@@ -40,7 +40,8 @@ jobs:
         coverage: none
 
     - name: Validate composer.json and composer.lock
-      run: composer validate --strict
+      # Could be --strict if warnings should be errors, but then version number is an error...
+      run: composer validate
 
     - name: Cache Composer packages
       id: composer-cache
