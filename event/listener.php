@@ -24,7 +24,7 @@ class listener implements EventSubscriberInterface
 
 	/** @var \phpbb\user */
 
-	static public function getSubscribedEvents()
+	public static function getSubscribedEvents()
 	{
 		return array(
 			'core.posting_modify_cannot_edit_conditions'	=> 'post_edit',

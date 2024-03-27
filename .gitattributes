@@ -1,0 +1,10 @@
+* text=auto
+* text eol=lf
+
+tests/ export-ignore
+travis/ export-ignore
+.gitattributes export-ignore
+.travis.yml export-ignore
+build.xml export-ignore
+composer.phar export-ignore
+phpunit.xml.dist export-ignore
