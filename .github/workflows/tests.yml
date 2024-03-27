@@ -56,29 +56,33 @@ jobs:
       run: composer install --prefer-dist --no-progress
       
     - name: prepare EPV
-      run:
-        pwd
+      run: |
+        echo "EXT_GITDIR=$(pwd)" >> "$GITHUB_ENV"
         travis/prepare-epv.sh $NOTESTS $NOTESTS
     - name: Setup phpBB
-      run:
+      run: |
         travis/prepare-phpbb.sh $PHPBB_BRANCH
         cd ../../phpBB3
         .github/prepare-extension.sh $EXTNAME $PHPBB_BRANCH
         .github/setup-phpbb.sh $DB $TRAVIS_PHP_VERSION $NOTESTS
-        
+        # Env update:
+        echo "PHPBB_DIR=$(pwd)" >> "$GITHUB_ENV"
     
     - name: Setup database
-      run:
-        pwd
+      run: |
+        cd $PHPBB_DIR
         .github/setup-database.sh $DB $TRAVIS_PHP_VERSION $NOTESTS
     - name: Run sniffer
-      run:
+      run: |
+        cd $PHPBB_DIR
         .github/ext-sniff.sh $DB $TRAVIS_PHP_VERSION $EXTNAME $NOTESTS
     - name: Run ICC check
-      run:
+      run: |
+        cd $PHPBB_DIR
         .github/check-image-icc-profiles.sh $DB $TRAVIS_PHP_VERSION
     - name: Run EPV
-      run:
+      run: |
+        cd $PHPBB_DIR
         phpBB/vendor/bin/EPV.php run --dir='phpBB/ext/$EXTNAME/'
 
     # - name: Run test suite
