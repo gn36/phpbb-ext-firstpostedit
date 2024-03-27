@@ -1,0 +1,81 @@
+name: PHP Composer
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+permissions:
+  contents: read
+
+jobs:
+  simple-checks:
+    strategy:
+        matrix:
+            include:
+                - db: 'none'
+                  php: '8.1'
+                  NOTESTS: 1
+    runs-on: ubuntu-latest
+    name: PHP ${{ matrix.php }} - ${{ matrix.db }}
+    env:
+      DB: ${{ matrix.db }}
+      PHP_VERSION: ${{ matrix.php }}
+      EXTNAME: "gn36/firstpostedit"  # CHANGE name of the extension HERE
+      GITREPO: "gn36/phpbb-ext-firstpostedit"
+      SNIFF: "1"            # Should we run code sniffer on your code?
+      IMAGE_ICC: "1"        # Should we run icc profile sniffer on your images?
+      EPV: "1"              # Should we run EPV (Extension Pre Validator) on your code?
+      PHPBB_BRANCH: "3.3.x"
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php }}
+        extensions: dom, curl, libxml, mbstring, zip, pcntl, intl, gd, exif, iconv
+        coverage: none
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate --strict
+
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v3
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+
+    - name: Setup phpBB
+      run:
+        travis/prepare-phpbb.sh $PHPBB_BRANCH
+        cd ../../phpBB3
+        .github/prepare-extension.sh $EXTNAME $PHPBB_BRANCH
+        .github/setup-phpbb.sh $DB $TRAVIS_PHP_VERSION $NOTESTS
+        
+    - name: prepare EPV
+      run:
+        ../$GITREPO/travis/prepare-epv.sh $NOTESTS $NOTESTS
+    - name: Setup database
+      run:
+        .github/setup-database.sh $DB $TRAVIS_PHP_VERSION $NOTESTS
+    - name: Run sniffer
+      run:
+        .github/ext-sniff.sh $DB $TRAVIS_PHP_VERSION $EXTNAME $NOTESTS
+    - name: Run ICC check
+      run:
+        .github/check-image-icc-profiles.sh $DB $TRAVIS_PHP_VERSION
+    - name: Run EPV
+      run:
+        phpBB/vendor/bin/EPV.php run --dir='phpBB/ext/$EXTNAME/'
+
+    # - name: Run test suite
+    #   TODO: Setup and run phpunit tests
