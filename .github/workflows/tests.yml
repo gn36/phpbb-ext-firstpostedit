@@ -64,22 +64,22 @@ jobs:
         travis/prepare-phpbb.sh $PHPBB_BRANCH
         cd ../../phpBB3
         .github/prepare-extension.sh $EXTNAME $PHPBB_BRANCH
-        .github/setup-phpbb.sh $DB $TRAVIS_PHP_VERSION $NOTESTS
+        .github/setup-phpbb.sh $DB $PHP_VERSION $NOTESTS
         # Env update:
         echo "PHPBB_DIR=$(pwd)" >> "$GITHUB_ENV"
     
     - name: Setup database
       run: |
         cd $PHPBB_DIR
-        .github/setup-database.sh $DB $TRAVIS_PHP_VERSION $NOTESTS
+        .github/setup-database.sh $DB $PHP_VERSION $NOTESTS
     - name: Run sniffer
       run: |
         cd $PHPBB_DIR
-        .github/ext-sniff.sh $DB $TRAVIS_PHP_VERSION $EXTNAME $NOTESTS
+        .github/ext-sniff.sh $DB $PHP_VERSION $EXTNAME $NOTESTS
     - name: Run ICC check
       run: |
         cd $PHPBB_DIR
-        .github/check-image-icc-profiles.sh $DB $TRAVIS_PHP_VERSION
+        .github/check-image-icc-profiles.sh $DB $PHP_VERSION
     - name: Run EPV
       run: |
         cd $PHPBB_DIR
