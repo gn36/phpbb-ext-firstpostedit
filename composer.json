@@ -25,9 +25,10 @@
 			"phpbb/phpbb" : ">=3.1.3-RC1"
 		},
 		"version-check" : {
-			"host" : "phpbb.gn36.de",
-			"directory" : "/extensions/vinfo",
-			"filename" : "phpbb-ext-hookup.json"
+			"host" : "www.phpbb.com",
+			"directory" : "/customise/db/extension/gn36_firstpostedit",
+			"filename" : "version_check",
+			"ssl" : true
 		}
 	}
 }

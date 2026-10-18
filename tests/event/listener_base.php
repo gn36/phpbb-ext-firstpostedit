@@ -17,10 +17,14 @@ class listener_base extends \phpbb_test_case
 
 	/**
 	 * Set up test environment
+	 *
+	 * Uses @before instead of overriding setUp(), as setUp(): void is required
+	 * by PHPUnit 8+ (phpBB 3.3) but a return type is a syntax error on PHP < 7.1 (phpBB 3.1/3.2).
+	 *
+	 * @before
 	 */
-	public function setUp()
+	public function set_up_mocks()
 	{
-		parent::setUp();
 		$this->auth = $this->getMockBuilder('\phpbb\auth\auth')->getMock();
 		$this->user = $this->getMockBuilder('\phpbb\user')
 			->disableOriginalConstructor()

@@ -15,6 +15,8 @@ namespace gn36\firstpostedit\tests\functional;
 */
 class install_test extends \phpbb_functional_test_case
 {
+	use \gn36\firstpostedit\tests\compat;
+
 	static protected function setup_extensions()
 	{
 		return array('gn36/firstpostedit');
@@ -24,13 +26,13 @@ class install_test extends \phpbb_functional_test_case
 	{
 		// Check whether we can still call posting.php in edit mode (even though login prevents any useful use)
 		$crawler = self::request('GET', 'posting.php?mode=edit&f=2&p=1');
-		$this->assertContains('Username', $crawler->filter('dt')->text());
+		$this->assertTextContains('Username', $crawler->filter('dt')->text());
 	}
 
 	public function test_validate_viewtopic()
 	{
 		// Check whether we can still call viewtopic.php without errors
 		$crawler = self::request('GET', 'viewtopic.php?f=2&p=1');
-		$this->assertContains('Welcome', $crawler->filter('h2')->text());
+		$this->assertTextContains('Welcome', $crawler->filter('h2')->text());
 	}
 }
