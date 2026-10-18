@@ -9,3 +9,4 @@ travis/ export-ignore
 build.xml export-ignore
 composer.phar export-ignore
 phpunit.xml.dist export-ignore
+composer.phar binary
