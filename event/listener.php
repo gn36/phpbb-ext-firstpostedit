@@ -23,6 +23,7 @@ class listener implements EventSubscriberInterface
 	protected $auth;
 
 	/** @var \phpbb\user */
+	protected $user;
 
 	public static function getSubscribedEvents()
 	{
